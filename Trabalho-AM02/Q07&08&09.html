@@ -1,0 +1,134 @@
+<!--Questão 07-->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Validação de campos</title>
+  <style>
+    .erro {
+      color: red;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Formulário de Contato</h1>
+
+  <form id="formulario" onsubmit="return validarFormulario(event)">
+    <div>
+      <label for="nome">Nome:</label>
+      <input type="text" id="nome" name="nome">
+      <div id="erro-nome" class="erro"></div> <!-- Mensagem de erro -->
+    </div>
+
+    <div>
+      <label for="email">E-mail:</label>
+      <input type="email" id="email" name="email">
+      <div id="erro-email" class="erro"></div> <!-- Mensagem de erro -->
+    </div>
+
+    <div>
+      <label for="mensagem">Mensagem:</label>
+      <textarea id="mensagem" name="mensagem"></textarea>
+      <div id="erro-mensagem" class="erro"></div> <!-- Mensagem de erro -->
+    </div>
+
+    <button type="submit">Enviar</button>
+  </form>
+
+  <script>
+    function validarFormulario(event) {
+      let valido = true;
+  
+      // Validar campo de nome
+      const nome = document.getElementById('nome').value;
+      if (nome === '') {
+        document.getElementById('erro-nome').innerText = 'O campo Nome é obrigatório.';  // Exibição diretamente aqui
+        valido = false;
+      } else {
+        document.getElementById('erro-nome').innerText = '';  // Limpa a mensagem de erro caso o campo seja válido
+      }
+  
+      // Validar campo de e-mail
+      const email = document.getElementById('email').value;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (email === '') {
+        document.getElementById('erro-email').innerText = 'O campo E-mail é obrigatório.';  // Exibição diretamente aqui
+        valido = false;
+      } else if (!emailRegex.test(email)) {
+        document.getElementById('erro-email').innerText = 'O E-mail informado não é válido.';  // Exibição diretamente aqui
+        valido = false;
+      } else {
+        document.getElementById('erro-email').innerText = '';  // Limpa a mensagem de erro caso o campo seja válido
+      }
+  
+      // Validar campo de mensagem
+      const mensagem = document.getElementById('mensagem').value;
+      if (mensagem === '') {
+        document.getElementById('erro-mensagem').innerText = 'O campo Mensagem é obrigatório.';  // Exibição diretamente aqui
+        valido = false;
+      } else {
+        document.getElementById('erro-mensagem').innerText = '';  // Limpa a mensagem de erro caso o campo seja válido
+      }
+  
+      return valido; 
+    }
+  </script>
+</body>
+</html>
+
+<!--Questão 08-->
+
+<!-- O innerHTML serve para atualizar o conteúdo de um elemento, substituindo seu HTML interno por novo 
+ conteúdo, adicionado via JS. Ou seja, sempre que for necessário alterar o conteúdo de um elemento, 
+ podemos usar o innerHTML para inserir ou modificar o HTML através de JS. -->
+
+ <!DOCTYPE html>
+ <html lang="pt-BR">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>innerHTML</title>
+ </head>
+ <body>
+     <div id="conteudo">
+         <button class="btn">Clique Aqui</button>
+     </div>
+     <button id="carregar">Carregar Novo Conteúdo</button>
+ 
+     <script>
+         // Delegação de eventos: o manipulador é associado ao elemento pai
+         document.getElementById('conteudo').addEventListener('click', function(event) {
+             if (event.target && event.target.classList.contains('btn')) {
+                 alert('Botão clicado!');
+             }
+         });
+ 
+         // Carregar conteúdo dinamicamente com innerHTML
+         document.getElementById('carregar').addEventListener('click', function() {
+             document.getElementById('conteudo').innerHTML = `
+                 <button class="btn">Novo Botão</button>
+                 <button class="btn">Outro Botão</button>
+             `;
+         });
+     </script>
+ </body>
+ </html>
+
+<!--Questão 09-->
+
+O método "pushState()" adiciona um novo estado à pilha de histórico do navegador. Quando você usa pushState, 
+a URL na barra de endereços é atualizada, mas a página não é recarregada. Isso é útil para navegar entre 
+diferentes seções de um SPA sem interromper a experiência do usuário com recarregamentos.
+
+O método replaceState() funciona de maneira semelhante ao pushState, mas em vez de adicionar uma nova entrada 
+ao histórico, ele substitui a entrada atual. Isso é útil quando você quer alterar a URL sem adicionar uma 
+nova entrada de histórico, evitando que o usuário possa voltar para uma URL anterior.
+
+O evento popstate é acionado sempre que o usuário navega para um estado diferente na pilha de histórico. 
+Esse evento é disparado quando o usuário clica no botão "voltar" ou "avançar" do navegador.
+
+Você pode combinar essas funções para criar um sistema de rotas simples sem recarregar a página. 

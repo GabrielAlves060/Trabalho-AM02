@@ -1,0 +1,154 @@
+<!--Mobile first-->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo Mobile First</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 100%;
+            padding: 10px;
+            background-color: lightgray;
+        }
+
+        h1 {
+            font-size: 24px;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                width: 80%;
+                margin: 0 auto;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .container {
+                width: 60%;
+            }
+
+            h1 {
+                font-size: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Exemplo de Design Mobile First</h1>
+        <p>O mobile first é planejado para telas de celulares e se adapta conforme a tela aumenta.</p>
+    </div>
+
+</body>
+</html>
+
+
+
+<!--Desktop first-->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo Desktop First</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: lightgray;
+        }
+
+        h1 {
+            font-size: 40px;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                width: 90%;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 100%;
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Exemplo de Design Desktop First</h1>
+        <p>É a mesma coisa do desktop first, mas aqui ele começa no desktop e se adapta conforme a tela diminui .</p>
+    </div>
+
+</body>
+</html>
+
+<!--Questão 05-->
+<header>: é usado para definir a área do cabeçalho da página ou de uma seção. Ele geralmente contém o 
+título principal (como <h1>) e a navegação do site. Usar essa tag facilita para os motores de busca 
+entenderem rapidamente onde começa o conteúdo principal de uma página.
+
+<section> é usado para agrupar conteúdo tematicamente. Cada seção pode ser uma parte distinta de um site, 
+como "Sobre nós" ou "Serviços".
+Para o SEO, o uso de <section> ajuda a dividir o conteúdo de forma hierárquica.
+
+<article> é usado para representar conteúdo independente e autossuficiente, como uma notícia de blog.
+Para SEO, essa tag ajuda a identificar blocos de conteúdo que podem ser indexados de forma independente 
+pelos motores de busca.
+
+<nav>: O <nav> é utilizado para definir um conjunto de links. Pode ser o menu principal do site ou 
+para outras partes do site e até para sites externos. Isso melhora a indexação 
+do site pelos motores de busca. 
+
+<!--Questão 06-->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Botão</title>
+</head>
+<body>
+  <!-- Botão que será clicado -->
+  <button onclick="mostrarAlerta()">Clique aqui</button>
+
+  <script>
+    // Função JS que exibe o alertaonclick="mostrarAlerta()" é o responsável por "amarrar" a função 
+    // JS ao botão. Ou seja, quando o botão é clicado, a função mostrarAlerta() é chamada.
+    function mostrarAlerta() {
+      alert("Olá, mundo!");
+    }
+  </script>
+</body>
+</html>

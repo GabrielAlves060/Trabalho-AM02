@@ -1,0 +1,205 @@
+<!--Questão 10-->
+Para otimizar o carregamento da SPA, você pode combinar as seguintes técnicas:
+Code Splitting: Consiste em dividir a aplicação em pedaços menores (chunks) de código. Em vez de carregar um 
+grande bundle contendo toda a lógica da aplicação, o processo de code splitting permite que somente os 
+módulos necessários para a renderização inicial sejam carregados. Dessa forma, o bundle inicial fica mais 
+enxuto e o tempo de carregamento diminui, pois partes da aplicação podem ser baixadas de forma assíncrona 
+conforme a necessidade.
+
+Lazy Loading: Essa técnica adia o carregamento de módulos ou recursos que não são essenciais para o fluxo 
+inicial do usuário. Ao associar o lazy loading ao code splitting, os módulos que pertencem a funcionalidades 
+secundárias ou rotas específicas só serão baixados quando o usuário interagir com essas partes da aplicação. 
+Isso evita o carregamento simultâneo de todos os scripts, aliviando o trabalho do navegador no momento 
+inicial e contribuindo para uma experiência mais rápida e responsiva.
+
+Módulos JavaScript Nativos: Utilizar os módulos nativos (através da sintaxe ES Modules) permite que o 
+navegador gerencie o carregamento de scripts de forma mais eficiente. Os navegadores modernos suportam o 
+carregamento assíncrono e paralelo de módulos, o que potencializa os benefícios do code splitting e do lazy 
+loading. Além disso, os módulos nativos favorecem o cacheamento, já que o navegador consegue identificar e 
+reutilizar módulos que não sofreram alterações, reduzindo requisições desnecessárias.
+
+Integração das técnicas:
+Ao implementar o code splitting, você garante que somente o código essencial seja carregado inicialmente. 
+Em conjunto, o lazy loading adia a busca e execução dos módulos menos críticos até que o usuário realmente 
+precise deles, mantendo a aplicação leve no início. O uso de módulos nativos potencializa essa abordagem, 
+pois permite que o navegador realize o carregamento de forma otimizada, aproveitando o carregamento paralelo
+e o cache, o que diminui o tempo de espera e melhora a performance geral. Em resumo, essa combinação reduz a 
+quantidade de scripts baixados na primeira renderização, melhora a resposta da interface e distribui a carga
+de forma inteligente durante a interação do usuário com a aplicação.
+
+
+
+<!--Questão 11-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+  <p>Data e Hora Atual: <span id="dataHora"></span></p>
+
+  <script>
+    // Função para atualizar o conteúdo do span
+    function atualizarDataHora() {
+      const elemento = document.getElementById("dataHora");
+      const dataAtual = new Date();
+      elemento.innerHTML = dataAtual.toLocaleString(); // Formata data e hora
+    }
+
+    // Executa imediatamente para mostrar o valor inicial
+    atualizarDataHora();
+
+    // Atualiza a cada segundo (1000 milissegundos)
+    setInterval(atualizarDataHora, 1000);
+  </script>
+</body>
+</html>
+
+
+
+
+<!--Questão 12-->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu Dropdown Responsivo</title>
+  <style>
+    /* Estilos básicos */
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+      margin: 20px;
+    }
+
+    .dropdown-trigger {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .submenu {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+    }
+
+    .submenu a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .submenu a:hover {
+      background-color: #f1f1f1;
+    }
+
+    /* Classes para controle de visibilidade */
+    .dropdown.hover .submenu,
+    .dropdown.active .submenu {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="dropdown">
+    <button class="dropdown-trigger">Menu Principal</button>
+    <div class="submenu">
+      <a href="#">Item 1</a>
+      <a href="#">Item 2</a>
+      <a href="#">Item 3</a>
+      <a href="#">Item 4</a>
+    </div>
+  </div>
+
+  <div class="dropdown">
+    <button class="dropdown-trigger">Outro Menu</button>
+    <div class="submenu">
+      <a href="#">Item A</a>
+      <a href="#">Item B</a>
+      <a href="#">Item C</a>
+    </div>
+  </div>
+
+  <script>
+    // Detecção inicial de suporte a touch
+    let isTouchDevice = false;
+
+    // Elementos do dropdown
+    const dropdowns = document.querySelectorAll('.dropdown');
+
+    // Função para fechar outros dropdowns
+    function closeOtherDropdowns(current) {
+      dropdowns.forEach(dropdown => {
+        if (dropdown !== current) {
+          dropdown.classList.remove('active', 'hover');
+        }
+      });
+    }
+
+    // Eventos para dispositivos touch
+    document.addEventListener('touchstart', function(e) {
+      isTouchDevice = true;
+      const trigger = e.target.closest('.dropdown-trigger');
+      
+      if (trigger) {
+        const dropdown = trigger.closest('.dropdown');
+        closeOtherDropdowns(dropdown);
+        dropdown.classList.toggle('active');
+        e.preventDefault();
+      }
+    }, {passive: false});
+
+    // Eventos para mouse
+    dropdowns.forEach(dropdown => {
+      const trigger = dropdown.querySelector('.dropdown-trigger');
+      
+      // Mouse Enter
+      trigger.addEventListener('mouseenter', function() {
+        if (!isTouchDevice) {
+          closeOtherDropdowns(dropdown);
+          dropdown.classList.add('hover');
+        }
+      });
+
+      // Mouse Leave
+      trigger.addEventListener('mouseleave', function() {
+        if (!isTouchDevice) {
+          dropdown.classList.remove('hover');
+        }
+      });
+    });
+
+    // Fechar dropdowns ao clicar/tocar fora
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.dropdown')) {
+        dropdowns.forEach(dropdown => {
+          dropdown.classList.remove('active', 'hover');
+        });
+      }
+    });
+
+    // Resetar estado ao mudar de dispositivo
+    window.addEventListener('resize', function() {
+      isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!--Questão 13-->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consumo de API com Fetch</title>
+  <style>
+    #loading {
+      display: none;
+      color: #666;
+    }
+    #error {
+      display: none;
+      color: red;
+    }
+    #data-container {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="loading">Carregando dados...</div>
+  <div id="error"></div>
+  <div id="data-container"></div>
+
+  <script>
+    // Elementos do DOM
+    const loadingElement = document.getElementById('loading');
+    const errorElement = document.getElementById('error');
+    const dataContainer = document.getElementById('data-container');
+
+    // URL da API
+    const apiUrl = 'https://api.exemplo.com/dados';
+
+    // Função principal
+    async function fetchData() {
+      try {
+        // Mostra o indicador de carregamento
+        loadingElement.style.display = 'block';
+        errorElement.style.display = 'none';
+
+        // Faz a requisição
+        const response = await fetch(apiUrl);
+
+        // Verifica se a resposta é OK
+        if (!response.ok) {
+            throw new Error(`Erro HTTP: ${response.status}`);
+        }
+
+        // Converte a resposta para JSON
+        const data = await response.json();
+
+        // Exibe os dados
+        displayData(data);
+      } catch (error) {
+        // Trata erros
+        handleError(error);
+      } finally {
+        // Esconde o indicador de carregamento
+        loadingElement.style.display = 'none';
+      }
+    }
+
+    // Função para exibir os dados
+    function displayData(data) {
+      // Limpa o container
+      dataContainer.innerHTML = '';
+
+      // Verifica se há dados
+      if (data.length === 0) {
+        dataContainer.innerHTML = '<p>Nenhum dado disponível.</p>';
+        return;
+      }
+
+      // Cria elementos para cada item
+      const list = document.createElement('ul');
+      data.forEach(item => {
+        const listItem = document.createElement('li');
+        listItem.textContent = item.name || 'Item sem nome';
+        list.appendChild(listItem);
+      });
+
+      // Adiciona a lista ao container
+      dataContainer.appendChild(list);
+    }
+
+    // Função para tratar erros
+    function handleError(error) {
+      console.error('Erro:', error);
+      errorElement.textContent = `Erro ao carregar dados: ${error.message}`;
+      errorElement.style.display = 'block';
+    }
+
+    // Inicia o processo ao carregar a página
+    window.addEventListener('load', fetchData);
+  </script>
+</body>
+</html>
+
+Explicação:
+
+Explicação da lógica:
+Fluxo principal:
+
+fetchData() é a função assíncrona principal que orquestra o processo
+
+Mostra o indicador de carregamento antes de iniciar a requisição
+
+Usa await para esperar a resposta e o parsing do JSON
+
+Chama displayData() para renderizar os dados no DOM
+
+Tratamento de erros:
+
+Bloco try/catch captura erros de rede e parsing
+
+Verifica response.ok para tratar códigos HTTP de erro
+
+handleError() exibe mensagens de erro amigáveis ao usuário
+
+Exibição dos dados:
+
+displayData() cria elementos DOM dinamicamente
+
+Verifica se há dados antes de tentar exibir
+
+Cria uma lista não ordenada (<ul>) com os itens
+
+Feedback visual:
+
+Mostra/esconde o indicador de carregamento
+
+Exibe mensagens de erro claras
+
+Limpa o container antes de adicionar novos dados
+
+Tratamento de erros específicos:
+Erros de rede:
+
+Capturados automaticamente pelo catch
+
+Exemplo: Falha de conexão, timeout
+
+Erros HTTP:
+
+Verificados com response.ok
+
+Exemplo: 404 (Not Found), 500 (Internal Server Error)
+
+Erros de parsing:
+
+Capturados ao tentar response.json()
+
+Exemplo: Resposta não é um JSON válido
+
+Dados inesperados:
+
+Verificação de data.length e uso de fallback (item.name || 'Item sem nome')
+
+Exemplo: API retorna array vazio ou objetos sem propriedades esperadas
+
+Melhorias possíveis:
+Cache de dados:
+
+Armazenar dados no localStorage para evitar requisições repetidas
+
+Paginação:
+
+Implementar carregamento de mais dados ao rolar a página
+
+Timeout:
+
+Adicionar timeout para a requisição fetch
+
+Acessibilidade:
+
+Adicionar ARIA attributes para melhorar a experiência de usuários com leitores de tela
+
+Tipagem:
+
+Usar TypeScript para garantir a estrutura dos dados da API
+
+Este exemplo fornece uma base sólida e segura para consumo de APIs com tratamento adequado de erros e feedback ao usuário.
+
+
+<!--Questão 14-->
+
+localStorage e sessionStorage são úteis para armazenar pequenos volumes de dados de maneira simples.
+No entanto, são limitados a pares chave/valor e só suportam strings, exigindo conversão para armazenar 
+objetos complexos (ex.: JSON.stringify).
+sessionStorage é útil para armazenar informações que devem ser descartadas quando o usuário fecha a aba ou 
+janela, como estados de formulários temporários.
+IndexedDB é uma solução mais avançada, permitindo o armazenamento de objetos grandes e complexos, com suporte
+a transações e índices para consultas eficientes.
+Escolha do Melhor Armazenamento
+Use localStorage para configurações persistentes leves, preferências e dados pequenos acessíveis de forma 
+rápida.
+Use sessionStorage para dados temporários que não devem persistir após o fechamento da aba, como estados de 
+formulários ou dados de sessão.
+Use IndexedDB para aplicativos que exigem armazenamento estruturado, grandes volumes de dados, caching offline
+e sincronização com um backend.
+Para aplicações SPA robustas que precisam minimizar chamadas ao servidor, IndexedDB é a melhor escolha devido
+ao suporte a grandes volumes de dados e sua estrutura otimizada para buscas e armazenamento eficiente.
+
+<!--Questão 15-->
+
+Service Worker
+Cachear arquivos estáticos:
+
+Objetivo: Armazenar no navegador arquivos essenciais como HTML, CSS, JavaScript e imagens, de modo que a 
+aplicação possa carregar rapidamente sem depender da rede.
+Como funciona: Durante o processo de instalação do Service Worker, ele abre um "cache" e armazena todos os 
+arquivos que serão utilizados pela aplicação. Esse cache é um espaço no armazenamento do navegador destinado 
+a guardar recursos, possibilitando que, mesmo em uma conexão lenta ou ausente, o conteúdo previamente 
+armazenado seja disponibilizado para o usuário.
+
+Providenciar uma experiência offline básica:
+
+Objetivo: Permitir que a aplicação funcione mesmo sem conexão com a internet.
+Como funciona: O Service Worker intercepta as requisições de rede feitas pela aplicação. Ao receber uma 
+solicitação, ele verifica se o recurso correspondente já foi cacheado. Se estiver disponível no cache, 
+o Service Worker o retorna imediatamente, garantindo que o usuário visualize o conteúdo armazenado 
+anteriormente. Caso o recurso não esteja no cache ou ocorra alguma falha na rede, pode ser configurado 
+para retornar uma página de fallback ou um conteúdo padrão, oferecendo assim uma experiência offline mínima.
+
+Atualizar o cache quando houver nova versão dos arquivos:
+
+Objetivo: Manter o conteúdo atualizado, garantindo que os usuários sempre tenham acesso à versão mais recente 
+dos arquivos.
+Como funciona: Quando o Service Worker é ativado (normalmente após uma atualização da aplicação), ele pode 
+realizar uma verificação dos caches existentes e comparar com a versão atual dos arquivos. Se detectar que os 
+arquivos foram alterados (por exemplo, com um novo nome de cache ou versão diferente), o Service Worker limpa 
+os caches antigos e armazena os novos arquivos. Esse processo assegura que, na próxima vez que o usuário 
+acessar a aplicação, ele receba os recursos atualizados.
+
+Manifesto PWA
+O manifesto PWA é um arquivo de configuração (geralmente em formato JSON) que fornece ao navegador informações 
+sobre a aplicação, permitindo que ela seja instalada no dispositivo do usuário e se comporte de forma 
+semelhante a um aplicativo nativo.
+
+Como o manifesto ajuda na “instalação” do app:
+
+Experiência de instalação: Ao definir o manifesto, o navegador pode exibir uma opção para o usuário “instalar”
+a aplicação, o que geralmente adiciona um ícone à tela inicial do dispositivo. Isso facilita o acesso e permite
+ que a aplicação seja aberta em tela cheia, sem a interface tradicional do navegador.
+Aparência e comportamento: O manifesto define como a aplicação deve ser apresentada 
+(por exemplo, em modo standalone, que remove a barra de endereços e outras interfaces do navegador) e 
+configura aspectos visuais, como cores e ícones, contribuindo para uma experiência mais imersiva e integrada 
+ao sistema operacional.
+
+Campos essenciais no manifesto PWA:
+
+name e short_name: Identificam o nome completo e o nome abreviado da aplicação. O “short_name” é especialmente
+útil quando o espaço é limitado, como na tela inicial.
+start_url: Define qual URL deve ser carregada quando o usuário abre a aplicação a partir do atalho instalado. 
+Geralmente, aponta para a página inicial ou para uma rota específica da aplicação.
+display: Controla o modo de exibição do app. Por exemplo, a opção “standalone” faz com que a aplicação seja 
+exibida sem elementos típicos do navegador, proporcionando uma experiência similar à de um aplicativo nativo.
+icons: Uma lista de ícones em diferentes tamanhos que serão usados para representar a aplicação em diversos 
+contextos (tela inicial, lançador de aplicativos, etc.).
+background_color e theme_color: Esses campos definem as cores que serão utilizadas na tela de carregamento e 
+na interface do navegador. Eles ajudam a manter uma identidade visual consistente, especialmente quando o 
+aplicativo é iniciado.
+
+Resumo
+Service Worker:
+Permite interceptar requisições e armazenar recursos estáticos no cache, garantindo que a aplicação funcione 
+offline e atualize seus arquivos quando uma nova versão for disponibilizada. Durante a instalação, ele cacheia
+os arquivos, durante a operação intercepta as requisições para servir conteúdo cacheado e, na ativação, 
+remove caches antigos para atualizar os recursos.
+
+Manifesto PWA:
+Fornece informações essenciais para que o navegador possa tratar a aplicação como um app nativo, permitindo sua
+instalação no dispositivo do usuário. Os campos críticos incluem o nome (com versão completa e abreviada), a 
+URL inicial, o modo de exibição, os ícones e as cores de tema e fundo, garantindo uma experiência consistente
+e integrada.
+
+Combinando essas duas tecnologias, sua SPA não só funcionará offline, mas também poderá ser instalada e 
+executada com aparência e comportamento semelhantes aos de aplicativos nativos, oferecendo uma experiência 
+mais fluida e moderna para os usuários.
